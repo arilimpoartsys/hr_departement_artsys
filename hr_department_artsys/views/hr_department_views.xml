@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem
+            id="hr_org_structure_menu"
+            name = "Organization Structure"        
+            parent="hr.menu_human_resources_configuration"
+            sequence="0"
+            groups="hr.group_hr_user"/>  
+                        
+        <record id="view_department_filter_hradv_artsys_ih1" model="ir.ui.view">
+            <field name="name">hr.department.search</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_filter"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//field[@name='manager_id']" position="before">
+                    	<field name="category" />
+                    	<filter string="Director" name="filter_director" domain="[('category','=','dir')]"/>
+                    	<filter string="Division" name="filter_division" domain="[('category','=','div')]"/>
+                    	<filter string="Department" name="filter_department" domain="[('category','=','dep')]"/>
+                    	<filter string="Unit" name="filter_unit" domain="[('category','=','unit')]"/>
+                    	<filter string="Sub-Unit" name="filter_subunit" domain="[('category','=','sunit')]"/>
+                    </xpath>
+                    <xpath expr="//filter[@name='inactive']" position="after">
+	                    <group expand="0" string="Group By">
+	                        <filter string="Category" name="group_category" domain="[]" context="{'group_by':'category'}"/>
+	                        <filter string="Manager/Coach" name="group_manager" domain="[]" context="{'group_by':'manager_id'}"/>
+	                    </group>
+                    </xpath>
+             </field>
+        </record>
+        <record id="view_department_tree_hradv_artsys_ih1" model="ir.ui.view">
+            <field name="name">hr.department.tree</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='display_name']" position="after">
+						<field name="category"/> 
+                    </xpath>
+                </data>
+             </field>
+        </record>
+        <record id="view_department_form_hradv_artsys_ih1" model="ir.ui.view">
+            <field name="name">hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='name']" position="after">
+						<field name="category"/>
+                    </xpath>
+                </data>
+             </field>
+        </record>
+
+        <!-- List of Organization Structure -->
+        <record id="hradv_artsys_os_action" model="ir.actions.act_window">
+            <field name="name">List of Org.Structure</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_os_action" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_os_action"/>
+        </record>
+        <record id="hradv_artsys_os_action" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_os_action"/>
+        </record>
+        <record id="hradv_artsys_os_action" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_os_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_os_menu"
+            action="hradv_artsys_os_action"
+            parent="hr_org_structure_menu"
+            sequence="0"
+            groups="hr.group_hr_user"/>
+
+        <!-- Directorate -->
+        <record id="hradv_artsys_dir_action" model="ir.actions.act_window">
+            <field name="name">Directorate</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('category','=','dir')]</field>
+            <field name="context">{'default_category': 'dir', 'search_default_filter_director':1}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_dir_action_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_dir_action"/>
+        </record>
+        <record id="hradv_artsys_dir_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr.view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_dir_action"/>
+        </record>
+        <record id="hradv_artsys_dir_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_dir_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_dir_menu"
+            action="hradv_artsys_dir_action"
+            parent="hr_org_structure_menu"
+            sequence="10"
+            groups="hr.group_hr_user"/>
+
+        <!-- Division -->
+        <record id="hradv_artsys_div_action" model="ir.actions.act_window">
+            <field name="name">Division</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('category','in',('dir','div'))]</field>
+            <field name="context">{'default_category': 'div', 'search_default_filter_division':1}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_div_action_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_div_action"/>
+        </record>
+        <record id="hradv_artsys_div_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr.view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_div_action"/>
+        </record>
+        <record id="hradv_artsys_div_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_div_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_div_menu"
+            action="hradv_artsys_div_action"
+            parent="hr_org_structure_menu"
+            sequence="20"
+            />
+                            	            	
+        <!-- Department -->
+        <record id="hradv_artsys_dep_action" model="ir.actions.act_window">
+            <field name="name">Department</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('category','in',('dir','div','dep'))]</field>
+            <field name="context">{'default_category': 'dep', 'search_default_filter_department':1}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_dep_action_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_dep_action"/>
+        </record>
+        <record id="hradv_artsys_dep_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr.view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_dep_action"/>
+        </record>
+        <record id="hradv_artsys_dep_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="hr.view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_dep_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_dep_menu"
+            action="hradv_artsys_dep_action"
+            parent="hr_org_structure_menu"
+            sequence="30"
+            groups="hr.group_hr_user"/>
+
+            	
+        <!-- Unit -->
+        <record id="hradv_artsys_unit_action" model="ir.actions.act_window">
+            <field name="name">Unit</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('category','in',('dir','div','dep','unit'))]</field>
+            <field name="context">{'default_category':'unit', 'search_default_filter_unit':1}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_unit_action_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_unit_action"/>
+        </record>
+        <record id="hradv_artsys_unit_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr.view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_unit_action"/>
+        </record>
+        <record id="hradv_artsys_unit_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_unit_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_unit_menu"
+            action="hradv_artsys_unit_action"
+            parent="hr_org_structure_menu"
+            sequence="40"
+            groups="hr.group_hr_user"/>  
+            	            	
+
+        <!-- Sub Unit -->
+        <record id="hradv_artsys_subunit_action" model="ir.actions.act_window">
+            <field name="name">Sub-Unit</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('category','in',('dir','div','dep','sdep','sunit'))]</field>
+            <field name="context">{'default_category':'sunit', 'search_default_filter_subunit':1}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="view_id" ref="hr.view_department_tree"/>
+        </record>
+        <!--
+        <record id="hradv_artsys_subunit_action_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr.hr_department_view_kanban"/>
+            <field name="act_window_id" ref="hradv_artsys_subunit_action"/>
+        </record>
+        <record id="hradv_artsys_subunit_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr.view_department_tree"/>
+            <field name="act_window_id" ref="hradv_artsys_subunit_action"/>
+        </record>
+        <record id="hradv_artsys_subunit_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_department_form"/>
+            <field name="act_window_id" ref="hradv_artsys_subunit_action"/>
+        </record>
+        -->
+        <menuitem
+            id="hradv_artsys_subunit_menu"
+            action="hradv_artsys_subunit_action"
+            parent="hr_org_structure_menu"
+            sequence="41"
+            groups="hr.group_hr_user"/>
+
+
+            	
+    </data>
+</odoo>
