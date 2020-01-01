@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_employee_filter_advance" model="ir.ui.view">
+			<field name="name">hr.employee.search</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_filter"/>
+			<field name="arch" type="xml">
+				<xpath expr="//filter[@name='group_department']" position="before">
+					<filter string="Directorate" name="group_directorate" domain="[]" context="{'group_by':'directorate_id'}"/>
+					<filter string="Division" name="group_division" domain="[]" context="{'group_by':'division_id'}"/>
+				</xpath>
+				<xpath expr="//filter[@name='group_department']" position="after">
+					<filter string="Unit" name="group_subdept" domain="[]" context="{'group_by':'unit_id'}"/>
+					<filter string="Sub-Unit" name="group_subunit" domain="[]" context="{'group_by':'subunit_id'}"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="view_employee_tree_advance" model="ir.ui.view">
+			<field name="name">hr.employee.tree</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_tree"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='department_id']" position="before">
+					<field name="directorate_id"/>
+					<field name="division_id"/>
+				</xpath>
+				<xpath expr="//field[@name='department_id']" position="after">
+					<field name="unit_id"/>
+					<field name="subunit_id"/>
+				</xpath>
+			</field>
+		</record>
+		<record id="hr_advance_view_employee_form_inherited" model="ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='department_id']" position="before">
+					<field name="directorate_id"/>
+					<field name="division_id"/>
+				</xpath>
+				<xpath expr="//field[@name='department_id']" position="after">
+					<field name="unit_id"/>
+					<field name="subunit_id"/>
+				</xpath>
+			</field>
+		</record>
+
+	</data>
+</odoo>
